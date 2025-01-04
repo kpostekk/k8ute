@@ -115,6 +115,27 @@ export class ChallengesService {
         },
       }
 
+      if (c.kind === "Deployment" && c.apiVersion === "apps/v1") {
+        // inject labels into pod template
+        const deploymentBlueprint = c as V1Deployment
+        const labels = {
+          spec: {
+            template: {
+              metadata: {
+                labels: {
+                  "k8ute/challenge": opts.id,
+                  "k8ute/challenger": opts.challenger.id,
+                },
+              },
+            },
+          },
+        }
+
+        const deploymentLabeled = mergeDeep(deploymentBlueprint, labels) as unknown as V1Deployment
+
+        c.spec = deploymentLabeled.spec
+      }
+
       try {
         await this.k8s.kObjApi.read(c)
       } catch (e) {
