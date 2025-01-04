@@ -1,0 +1,15 @@
+input Challenger {
+  id: String!
+  name: String!
+}
+
+input CreateChallenge {
+  id: String!
+}
+
+type Mutation {
+  createChallenge(challenge: CreateChallenge!, challenger: Challenger!): JSON!
+  deleteChallenge(challenge: CreateChallenge!, challenger: Challenger!): JSON!
+  resetChallenge(challenger: Challenger!): JSON!
+  resetChallengeSpace(challenger: Challenger!): JSON!
+}

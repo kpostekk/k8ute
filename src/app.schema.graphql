@@ -1,0 +1,7 @@
+scalar DateTime
+scalar JSON
+
+type Query {
+  hello: String # returns a "world" string
+  now: DateTime!
+}

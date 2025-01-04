@@ -1,0 +1,15 @@
+services:
+  alpine-vector:
+    image: kpostekk/k8ute-02:vector
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: alpine-hacker-base
+    ports:
+      - 30022:22
+  alpine-source:
+    image: kpostekk/k8ute-02:source
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: secret-source

@@ -1,0 +1,7 @@
+type Query {
+  collection: JSON!
+}
+
+type Mutation {
+  reloadCollection: JSON!
+}
