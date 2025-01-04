@@ -1,10 +1,10 @@
 import { Injectable, Logger } from "@nestjs/common"
 import { CollectionService } from "./collection/collection.service"
 import { KubernetesService } from "src/kubernetes/kubernetes.service"
-import { ApiException } from "@kubernetes/client-node"
+import { ApiException, V1Deployment } from "@kubernetes/client-node"
 import { Challenger } from "./challengers/challengers.service"
 import * as dateFns from "date-fns"
-import { toKebabCase } from "remeda"
+import { toKebabCase, mergeDeep } from "remeda"
 
 export type ChallengeOptions = {
   challenger: Challenger
@@ -238,5 +238,26 @@ export class ChallengesService {
     }
 
     return true
+  }
+
+  async findActiveChallenges(challenger: Pick<Challenger, "id" | "name">) {
+    const namespaceName = this.createNamespaceName(challenger)
+
+    // find any services with label k8ute/challenger=challengerId
+
+    const challengeServices = await this.k8s.api.listNamespacedService({
+      namespace: namespaceName,
+      labelSelector: `k8ute/challenge`,
+    })
+
+    const challengePods = await this.k8s.api.listNamespacedPod({
+      namespace: namespaceName,
+      labelSelector: `k8ute/challenge`,
+    })
+
+    return {
+      services: challengeServices.items,
+      pods: challengePods.items,
+    }
   }
 }
