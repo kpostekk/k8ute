@@ -19,8 +19,17 @@ export default [
   ...tseslint.configs.strictTypeChecked,
   {
     rules: {
-      "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true }],
-      "@typescript-eslint/restrict-template-expressions": ["off"]
+      "@typescript-eslint/no-extraneous-class": [
+        "error",
+        { allowWithDecorator: true },
+      ],
+      "@typescript-eslint/restrict-template-expressions": ["off"],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        {
+          checksVoidReturn: false,
+        },
+      ],
     },
   },
 ]
