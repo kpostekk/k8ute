@@ -7,6 +7,10 @@ input CreateChallenge {
   id: String!
 }
 
+type Query {
+  challengeSpace(challenger: Challenger!): JSON!
+}
+
 type Mutation {
   createChallenge(challenge: CreateChallenge!, challenger: Challenger!): JSON!
   deleteChallenge(challenge: CreateChallenge!, challenger: Challenger!): JSON!

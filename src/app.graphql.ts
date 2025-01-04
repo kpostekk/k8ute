@@ -67,7 +67,12 @@ export type MutationResetChallengeSpaceArgs = {
 
 export type Query = {
   __typename?: "Query"
+  challengeSpace: Scalars["JSON"]["output"]
   collection: Scalars["JSON"]["output"]
   hello: Maybe<Scalars["String"]["output"]>
   now: Scalars["DateTime"]["output"]
+}
+
+export type QueryChallengeSpaceArgs = {
+  challenger: Challenger
 }

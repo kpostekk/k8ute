@@ -10,5 +10,5 @@ export type Challenger = {
 export class ChallengersService {
   private readonly redisKeyPrefix = "challengers"
 
-  constructor(private readonly redis: RedisService) {}
+  // constructor(private readonly redis: RedisService) {}
 }

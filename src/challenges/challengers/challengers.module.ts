@@ -4,7 +4,7 @@ import { ChallengersGuard } from "./challengers.guard"
 import { RedisModule } from "src/redis/redis.module"
 
 @Module({
-  imports: [RedisModule],
+  // imports: [RedisModule],
   providers: [ChallengersService, ChallengersGuard],
   exports: [ChallengersService, ChallengersGuard],
 })
