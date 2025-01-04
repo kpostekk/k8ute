@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: operator
   labels:
-    challengeExpose: "true"
+    k8ute/expose: "k8ute-k8ute-22"
 spec:
   selector:
     app: operator
