@@ -25,22 +25,22 @@ import { RedisModule } from "./redis/redis.module"
       envFilePath: [".env", ".env.local"],
       validate,
     }),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        connection: {
-          url: config.getOrThrow<string>("REDIS_URL"),
-        },
-      }),
-    }),
-    RedisModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        url: config.getOrThrow<string>("REDIS_URL"),
-      }),
-    }),
+    // BullModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (config: ConfigService) => ({
+    //     connection: {
+    //       url: config.getOrThrow<string>("REDIS_URL"),
+    //     },
+    //   }),
+    // }),
+    // RedisModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (config: ConfigService) => ({
+    //     url: config.getOrThrow<string>("REDIS_URL"),
+    //   }),
+    // }),
     KubernetesModule.forRootAsync({
       useFactory: async () => {
         const k = await import("@kubernetes/client-node")
