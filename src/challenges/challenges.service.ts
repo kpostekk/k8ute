@@ -21,7 +21,7 @@ export class ChallengesService {
   ) {}
 
   private createNamespaceName(challenger: Pick<Challenger, "id" | "name">) {
-    return `chngr-${challenger.id}`
+    return `k8ute-${challenger.id}`
   }
 
   async createChallenge(opts: ChallengeOptions) {
@@ -103,21 +103,21 @@ export class ChallengesService {
     })
 
     // check if resources already exist, if not create them
-    for (const c of firstChallenge) {
-      c.metadata = {
-        ...c.metadata,
+    for (const challengeComponent of firstChallenge.components) {
+      challengeComponent.metadata = {
+        ...challengeComponent.metadata,
         namespace: namespaceName, // inject namespace into resource
         deletionTimestamp: expire, // inject expiration timestamp
         labels: {
-          ...c.metadata?.labels,
+          ...challengeComponent.metadata?.labels,
           "k8ute/challenge": opts.id, // inject challenge label
           "k8ute/challenger": opts.challenger.id, // inject challenger label
         },
       }
 
-      if (c.kind === "Deployment" && c.apiVersion === "apps/v1") {
+      if (challengeComponent.kind === "Deployment" && challengeComponent.apiVersion === "apps/v1") {
         // inject labels into pod template
-        const deploymentBlueprint = c as V1Deployment
+        const deploymentBlueprint = challengeComponent as V1Deployment
         const labels = {
           spec: {
             template: {
@@ -131,27 +131,30 @@ export class ChallengesService {
           },
         }
 
-        const deploymentLabeled = mergeDeep(deploymentBlueprint, labels) as unknown as V1Deployment
+        const deploymentLabeled = mergeDeep(
+          deploymentBlueprint,
+          labels,
+        ) as unknown as V1Deployment
 
-        c.spec = deploymentLabeled.spec
+        challengeComponent.spec = deploymentLabeled.spec
       }
 
       try {
-        await this.k8s.kObjApi.read(c)
+        await this.k8s.kObjApi.read(challengeComponent)
       } catch (e) {
         // resource does not exist, create it
         if (e instanceof ApiException && e.code === 404) {
-          await this.k8s.kObjApi.create(c)
+          await this.k8s.kObjApi.create(challengeComponent)
         } else {
           throw e
         }
       }
 
       this.logger.verbose({
-        msg: `Created ${c.kind}/${c.metadata.name}`,
-        namespace: c.metadata.namespace,
-        resourceKind: c.kind,
-        resourceName: c.metadata.name,
+        msg: `Created ${challengeComponent.kind}/${challengeComponent.metadata.name}`,
+        namespace: challengeComponent.metadata.namespace,
+        resourceKind: challengeComponent.kind,
+        resourceName: challengeComponent.metadata.name,
       })
     }
 
@@ -178,14 +181,14 @@ export class ChallengesService {
 
     if (!challengeResources) throw new Error("Challenge not found!")
 
-    for (const c of challengeResources) {
-      c.metadata = {
-        ...c.metadata,
+    for (const component of challengeResources.components) {
+      component.metadata = {
+        ...component.metadata,
         namespace: namespaceName,
       }
 
       try {
-        await this.k8s.kObjApi.delete(c)
+        await this.k8s.kObjApi.delete(component)
         removals += 1
       } catch (e) {
         if (e instanceof ApiException && e.code === 404) {
