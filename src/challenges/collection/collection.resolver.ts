@@ -5,9 +5,9 @@ import { CollectionService } from "./collection.service"
 export class CollectionResolver {
   constructor(private readonly collection: CollectionService) {}
 
-  @Query("collection")
+  @Query("challengesCollection")
   queryCollection() {
-    return Object.keys(this.collection.findChallenges())
+    return Object.values(this.collection.findChallenges())
   }
 
   @Mutation("reloadCollection")
