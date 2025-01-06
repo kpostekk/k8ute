@@ -6,6 +6,7 @@ import { APP_GUARD } from "@nestjs/core"
 import { ChallengersGuard } from "./challengers/challengers.guard"
 import { ChallengesResolver } from "./challenges.resolver"
 import { KubernetesModule } from "src/kubernetes/kubernetes.module"
+import { SecretFlagsModule } from './secret-flags/secret-flags.module';
 
 @Module({
   providers: [
@@ -13,6 +14,6 @@ import { KubernetesModule } from "src/kubernetes/kubernetes.module"
     { provide: APP_GUARD, useClass: ChallengersGuard },
     ChallengesResolver,
   ],
-  imports: [CollectionModule, ChallengersModule, KubernetesModule],
+  imports: [CollectionModule, ChallengersModule, KubernetesModule, SecretFlagsModule],
 })
 export class ChallengesModule {}
