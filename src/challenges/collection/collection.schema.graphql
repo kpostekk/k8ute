@@ -1,5 +1,10 @@
+type ChallengeDetails {
+  id: String!
+  description: String
+}
+
 type Query {
-  collection: JSON!
+  challengesCollection: [ChallengeDetails!]!
 }
 
 type Mutation {

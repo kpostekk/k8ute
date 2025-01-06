@@ -29,6 +29,12 @@ export type Scalars = {
   JSON: { input: unknown; output: unknown }
 }
 
+export type ChallengeDetails = {
+  __typename?: "ChallengeDetails"
+  description: Maybe<Scalars["String"]["output"]>
+  id: Scalars["String"]["output"]
+}
+
 export type Challenger = {
   id: Scalars["String"]["input"]
   name: Scalars["String"]["input"]
@@ -68,9 +74,7 @@ export type MutationResetChallengeSpaceArgs = {
 export type Query = {
   __typename?: "Query"
   challengeSpace: Scalars["JSON"]["output"]
-  collection: Scalars["JSON"]["output"]
-  hello: Maybe<Scalars["String"]["output"]>
-  now: Scalars["DateTime"]["output"]
+  collection: Array<ChallengeDetails>
 }
 
 export type QueryChallengeSpaceArgs = {
