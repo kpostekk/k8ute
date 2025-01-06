@@ -7,6 +7,13 @@ services:
       target: prod
     environment:
       REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgres://k8ute:k8ute@postgres:5432/k8ute
   redis:
     image: redis:alpine
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: k8ute
+      POSTGRES_PASSWORD: k8ute
+      POSTGRES_DB: k8ute
 

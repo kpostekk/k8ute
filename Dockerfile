@@ -19,6 +19,10 @@ FROM base AS base-prod
 
 RUN --mount=type=cache,id=pnpm,target=/.pnpm/store pnpm i --prod --frozen-lockfile
 
+COPY prisma/ ${K8UTE_HOME}/prisma/
+
+RUN pnpx prisma generate
+
 # ---
 FROM base AS base-dev
 
@@ -28,6 +32,8 @@ RUN --mount=type=cache,id=pnpm,target=/.pnpm/store pnpm i --frozen-lockfile
 FROM base-dev AS build
 
 COPY tsconfig.json tsconfig.build.json .swcrc ${K8UTE_HOME}/
+
+COPY prisma/ ${K8UTE_HOME}/prisma/
 
 COPY src/ ${K8UTE_HOME}/src/
 

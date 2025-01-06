@@ -10,6 +10,7 @@ import { validate } from "./app.config"
 import { KubernetesModule } from "./kubernetes/kubernetes.module"
 import { ChallengesModule } from "./challenges/challenges.module"
 import { RedisModule } from "./redis/redis.module"
+import { PrismaModule } from "./prisma/prisma.module"
 
 @Module({
   imports: [
@@ -22,7 +23,6 @@ import { RedisModule } from "./redis/redis.module"
       resolvers: { ...scalars.resolvers },
     }),
     ConfigModule.forRoot({
-      envFilePath: [".env", ".env.local"],
       validate,
     }),
     // BullModule.forRootAsync({
@@ -53,6 +53,7 @@ import { RedisModule } from "./redis/redis.module"
       },
     }),
     ChallengesModule,
+    PrismaModule,
   ],
   providers: [AppResolver],
 })
