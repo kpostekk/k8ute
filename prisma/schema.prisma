@@ -14,6 +14,21 @@ datasource db {
 }
 
 model Challenger {
-  id   String @id @default(uuid())
-  name String
+  id           String                 @id @default(uuid())
+  name         String                 @unique
+  argon2Digest String                 @map("argon2")
+  flags        ChallengeDynamicFlag[] @ignore
+}
+
+model ChallengeDynamicFlag {
+  id String @id @default(uuid())
+
+  challengeId String
+
+  challengerId String
+  challenger   Challenger @relation(fields: [challengerId], references: [id])
+
+  flag String
+
+  @@unique([challengeId, challengerId])
 }
