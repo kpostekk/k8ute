@@ -1,3 +1,3 @@
 # Wordpress
 
-Twoim zadaniem jest zalogować się do aplikacji wordpress.
+Your objective is to login into the Wordpress admin panel.
