@@ -34,4 +34,7 @@ process.on("SIGTERM", async () => {
   await Promise.race([app.close(), timeout()])
 })
 
-await app.listen(config.get<number>("NEST_PORT") ?? 3000)
+await app.listen({
+  port: config.get<number>("NEST_PORT"),
+  host: config.get<string>("NEST_HOST")
+})
