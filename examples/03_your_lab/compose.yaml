@@ -1,0 +1,8 @@
+services:
+  lab:
+    image: kpostekk/k8ute-03:lab
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 30022:22
