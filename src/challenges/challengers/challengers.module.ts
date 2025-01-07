@@ -6,6 +6,7 @@ import { ChallengersResolver } from "./challengers.resolver"
 import { ChallengerAuthService } from "./challenger-auth/challenger-auth.service"
 import { JwtModule } from "@nestjs/jwt"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { ChallengerAuthGuard } from "./challenger-auth/challenger-auth.guard"
 
 @Module({
   // imports: [RedisModule],
@@ -21,10 +22,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
   ],
   providers: [
     ChallengersService,
-    ChallengersGuard,
     ChallengersResolver,
     ChallengerAuthService,
+    ChallengerAuthGuard,
   ],
-  exports: [ChallengersService, ChallengersGuard],
+  exports: [ChallengersService, ChallengerAuthService, ChallengerAuthGuard],
 })
 export class ChallengersModule {}

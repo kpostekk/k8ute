@@ -5,6 +5,7 @@ import { ApiException, V1Deployment } from "@kubernetes/client-node"
 import { Challenger } from "./challengers/challengers.service"
 import * as dateFns from "date-fns"
 import { toKebabCase, mergeDeep } from "remeda"
+import { SecretFlagsService } from "./secret-flags/secret-flags.service"
 
 export type ChallengeOptions = {
   challenger: Challenger
@@ -18,6 +19,7 @@ export class ChallengesService {
   constructor(
     private readonly collection: CollectionService,
     private readonly k8s: KubernetesService,
+    private readonly flags: SecretFlagsService,
   ) {}
 
   private createNamespaceName(challenger: Pick<Challenger, "id" | "name">) {
@@ -59,7 +61,7 @@ export class ChallengesService {
       }
     }
 
-    const secret = `k8ute_{${Buffer.from(Date.now().toString()).toString("base64url")}}`
+    const secret = await this.flags.createFlag(opts, opts.challenger)
     const secretName = `secret-${toKebabCase(opts.id)}`
 
     // inject secret into namespace
@@ -115,7 +117,10 @@ export class ChallengesService {
         },
       }
 
-      if (challengeComponent.kind === "Deployment" && challengeComponent.apiVersion === "apps/v1") {
+      if (
+        challengeComponent.kind === "Deployment" &&
+        challengeComponent.apiVersion === "apps/v1"
+      ) {
         // inject labels into pod template
         const deploymentBlueprint = challengeComponent as V1Deployment
         const labels = {
