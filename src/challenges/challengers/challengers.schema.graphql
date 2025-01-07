@@ -1,0 +1,23 @@
+type Challenger {
+  id: String!
+  name: String!
+}
+
+type ChallengerLogin {
+  challenger: Challenger!
+  token: String
+}
+
+input LoginChallenger {
+  name: String!
+  password: String!
+}
+
+type Query {
+  challenger(id: String!): Challenger!
+  me: Challenger!
+}
+
+type Mutation {
+  loginChallenger(challenger: LoginChallenger!): ChallengerLogin!
+}

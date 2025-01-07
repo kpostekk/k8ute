@@ -36,18 +36,36 @@ export type ChallengeDetails = {
 }
 
 export type Challenger = {
+  __typename?: "Challenger"
+  id: Scalars["String"]["output"]
+  name: Scalars["String"]["output"]
+}
+
+export type ChallengerInput = {
   id: Scalars["String"]["input"]
   name: Scalars["String"]["input"]
+}
+
+export type ChallengerLogin = {
+  __typename?: "ChallengerLogin"
+  challenger: Challenger
+  token: Maybe<Scalars["String"]["output"]>
 }
 
 export type CreateChallenge = {
   id: Scalars["String"]["input"]
 }
 
+export type LoginChallenger = {
+  name: Scalars["String"]["input"]
+  password: Scalars["String"]["input"]
+}
+
 export type Mutation = {
   __typename?: "Mutation"
   createChallenge: Scalars["JSON"]["output"]
   deleteChallenge: Scalars["JSON"]["output"]
+  loginChallenger: ChallengerLogin
   reloadCollection: Scalars["JSON"]["output"]
   resetChallenge: Scalars["JSON"]["output"]
   resetChallengeSpace: Scalars["JSON"]["output"]
@@ -55,28 +73,24 @@ export type Mutation = {
 
 export type MutationCreateChallengeArgs = {
   challenge: CreateChallenge
-  challenger: Challenger
 }
 
 export type MutationDeleteChallengeArgs = {
   challenge: CreateChallenge
-  challenger: Challenger
 }
 
-export type MutationResetChallengeArgs = {
-  challenger: Challenger
-}
-
-export type MutationResetChallengeSpaceArgs = {
-  challenger: Challenger
+export type MutationLoginChallengerArgs = {
+  challenger: LoginChallenger
 }
 
 export type Query = {
   __typename?: "Query"
   challengeSpace: Scalars["JSON"]["output"]
-  collection: Array<ChallengeDetails>
+  challenger: Challenger
+  challengesCollection: Array<ChallengeDetails>
+  me: Challenger
 }
 
-export type QueryChallengeSpaceArgs = {
-  challenger: Challenger
+export type QueryChallengerArgs = {
+  id: Scalars["String"]["input"]
 }
