@@ -65,7 +65,7 @@ spec:
           resources:
             limits:
               memory: "512Mi"
-              cpu: "0.2"
+              cpu: "1"
           ports:
             - containerPort: 3306
           env:
@@ -110,7 +110,7 @@ spec:
           resources:
             limits:
               memory: "512Mi"
-              cpu: "0.2"
+              cpu: "1"
           ports:
             - containerPort: 80
           env:
@@ -130,3 +130,37 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wp-inject-flag
+spec:
+  ttlSecondsAfterFinished: 60
+  activeDeadlineSeconds: 60
+  backoffLimit: 10
+  template:
+    spec:
+      containers:
+        - name: injector
+          image: kpostekk/k8ute-01:injector
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "0.1"
+          env:
+            - name: WP_URL
+              value: http://wordpress
+            - name: WP_USER
+              value: admin
+            - name: WP_PASSWORD
+              value: "hHHI 9Kxk c5S9 YhYn zr10 EJdY"
+            - name: WP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-01-wordpress
+                  key: secret
+          command: ["python3", "inject.py"]
+      restartPolicy: Never

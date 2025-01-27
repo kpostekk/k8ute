@@ -13,7 +13,7 @@ export class SecretFlagsService {
     challenger: Pick<Challenger, "id">,
   ) {
     const randomPayload = randomBytes(24).toString("base64url")
-    const flag = `k8ute_${randomPayload}`
+    const flag = `k8ute_{${randomPayload}}`
 
     const newFlag = await this.prisma.challengeDynamicFlag.upsert({
       where: {

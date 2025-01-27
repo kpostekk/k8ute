@@ -38,7 +38,7 @@ spec:
             value: "1"
       containers:
         - name: wireguard
-          image: ghcr.io/linuxserver/wireguard
+          image: linuxserver/wireguard:1.0.20210914
           envFrom:
             - configMapRef:
                 name: wireguard-configmap
@@ -58,16 +58,17 @@ spec:
               protocol: UDP
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "100m"
+              memory: "128Mi"
+              cpu: "0.5"
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "1"
           livenessProbe:
             exec:
               command: ["/bin/ping", "-q", "-c", "1", "10.13.13.1"]
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            timeoutSeconds: 5
+            initialDelaySeconds: 10
+            periodSeconds: 5
       volumes:
         - name: host-volumes
           hostPath:

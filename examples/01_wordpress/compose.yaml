@@ -1,0 +1,26 @@
+services:
+  wordpress:
+    image: kpostekk/k8ute-01:wordpress
+    ports:
+      - 31080:80
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: secret
+  mariadb:
+    image: kpostekk/k8ute-01:mariadb
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: secret
+      MARIA_ROOT_PASSWORD: verysecret
+  injector:
+    image: kpostekk/k8ute-01:injector
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      WP_URL: http://wordpress
+      WP_USER: admin
+      WP_PASSWORD: "hHHI 9Kxk c5S9 YhYn zr10 EJdY"
